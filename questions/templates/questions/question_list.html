@@ -23,6 +23,13 @@
     <button hx-get="{% url 'question_list' %}?category=MA" hx-target="#question-results" class="px-4 py-2 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 transition">Math</button>
     </div>
 
+    <div class="flex flex-wrap justify-center gap-2 mb-8 border-t border-slate-100 pt-6">
+    <span class="w-full text-center text-xs font-bold text-slate-400 uppercase mb-2">Filter by Level</span>
+    <button hx-get="{% url 'question_list' %}?difficulty=Junior" hx-target="#question-results" class="px-4 py-1 rounded-full border border-green-200 text-green-700 hover:bg-green-50 transition">Junior</button>
+    <button hx-get="{% url 'question_list' %}?difficulty=Mid" hx-target="#question-results" class="px-4 py-1 rounded-full border border-orange-200 text-orange-700 hover:bg-orange-50 transition">Mid</button>
+    <button hx-get="{% url 'question_list' %}?difficulty=Senior" hx-target="#question-results" class="px-4 py-1 rounded-full border border-red-200 text-red-700 hover:bg-red-50 transition">Senior</button>
+    </div>
+
     <div class="mb-8 max-w-xl mx-auto">
         <div class="relative">
             <input type="text" 
