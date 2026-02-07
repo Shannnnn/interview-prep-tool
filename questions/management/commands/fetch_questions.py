@@ -1,8 +1,11 @@
 import os
+from dotenv import load_dotenv
 import json
 from django.core.management.base import BaseCommand
 from questions.models import Question
 from openai import OpenAI
+
+load_dotenv()
 
 class Command(BaseCommand):
     help = 'Generates high-quality tech questions using OpenAI'
