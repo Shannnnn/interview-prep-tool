@@ -10,17 +10,15 @@
 </head>
 <body>
     <div class="card">
-        <h1>🚀 {{ challenge.title }}</h1>
-        <p style="font-size: 1.2em;">{{ challenge.body }}</p>
-        
-        <details style="margin: 20px 0;">
-            <summary>Check Answer</summary>
-            <p style="background: #eee; padding: 10px;">The determinant is: <strong>{{ challenge.answer }}</strong></p>
-        </details>
-
-        <a href="." class="btn">Generate New Challenge</a>
-        <br><br>
-        <a href="{% url 'question_list' %}">← Back to All Questions</a>
+    <h1>🚀 {{ challenge.title }}</h1>
+    <p>{{ challenge.body }}</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="correct_answer" value="{{ challenge.answer }}">
+        <input type="number" name="user_answer" placeholder="Enter your result" required>
+        <button type="submit" class="btn">Submit Answer</button>
+    </form>
     </div>
 </body>
 </html>

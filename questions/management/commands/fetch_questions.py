@@ -1,27 +1,39 @@
-import requests
+import os
+import json
 from django.core.management.base import BaseCommand
 from questions.models import Question
+from openai import OpenAI
 
 class Command(BaseCommand):
-    help = 'Fetches tech questions from an online API'
+    help = 'Generates high-quality tech questions using OpenAI'
 
     def handle(self, *args, **kwargs):
-        # 1. The URL for Computer Science questions
-        url = "https://opentdb.com/api.php?amount=10&category=18&type=multiple"
-        
-        self.stdout.write("Fetching data...")
-        response = requests.get(url)
-        data = response.json()
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-        if data['response_code'] == 0:
-            for item in data['results']:
-                # 2. Create the question in our Postgres DB
-                Question.objects.get_or_create(
-                    title=item['question'][:200], # Limit length
-                    category="General Tech",
-                    body=item['question'],
-                    answer=item['correct_answer']
-                )
-            self.stdout.write(self.style.SUCCESS('Successfully imported 10 questions!'))
-        else:
-            self.stdout.write(self.style.ERROR('Failed to fetch data.'))
+        prompt = """
+        Generate 5 advanced interview questions. 
+        Format: JSON list of objects with "title", "category", "body", "answer".
+        Categories must be: 'DJ' (Django), 'PY' (Python), or 'MA' (Math/Numpy).
+        Focus on: Django 4.2 optimization, Python 3.12 features, and Linear Algebra for ML.
+        """
+
+        self.stdout.write("Calling OpenAI to generate questions...")
+        
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            response_format={ "type": "json_object" }
+        )
+
+        # Parse the AI response
+        raw_data = json.loads(response.choices[0].message.content)
+        questions_list = raw_data.get('questions', [])
+
+        for q in questions_list:
+            Question.objects.get_or_create(
+                title=q['title'],
+                category=q['category'],
+                body=q['body'],
+                answer=q['answer']
+            )
+            self.stdout.write(self.style.SUCCESS(f"Added: {q['title']}"))

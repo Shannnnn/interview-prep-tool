@@ -9,14 +9,17 @@ def question_list(request):
 
 # 2. The new FastAPI-powered challenge view
 def daily_challenge(request):
-    try:
-        # Note: Ensure FastAPI is running on port 8000
-        response = requests.get("http://127.0.0.1:8000/generate/math", timeout=2)
-        api_data = response.json()
-    except Exception:
-        api_data = {
-            "title": "Service Offline",
-            "body": "Could not connect to the FastAPI Math Generator.",
-            "answer": "N/A"
-        }
-    return render(request, 'questions/challenge.html', {'challenge': api_data})
+    if request.method == "POST":
+        user_answer = request.POST.get("user_answer")
+        correct_answer = request.POST.get("correct_answer")
+        
+        is_correct = str(user_answer).strip() == str(correct_answer).strip()
+        
+        return render(request, 'questions/challenge_result.html', {
+            'is_correct': is_correct,
+            'correct_answer': correct_answer
+        })
+
+    # GET logic (fetch from FastAPI)
+    response = requests.get("http://127.0.0.1:8000/generate/math", timeout=2)
+    return render(request, 'questions/challenge.html', {'challenge': response.json()})
