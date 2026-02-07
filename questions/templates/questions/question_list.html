@@ -1,31 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Tech Interview Prep</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6; background: #f9f9f9; }
-        .question-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .badge { background: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; }
-        .answer { color: #555; background: #f1f1f1; padding: 10px; border-left: 4px solid #007bff; margin-top: 10px; }
-    </style>
-</head>
-<body>
-    <h1>📋 Interview Questions</h1>
-    
-    {% for q in questions %}
-        <div class="question-card">
-            <span class="badge">{{ q.get_category_display }}</span>
-            <h2>{{ q.title }}</h2>
-            <p>{{ q.body }}</p>
-            
-            <details>
-                <summary>Show Answer</summary>
-                <div class="answer">{{ q.answer }}</div>
-            </details>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-12">
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Interview Prep Master</h1>
+        <p class="text-slate-500 mb-6">Practice with AI-generated high-level tech questions.</p>
+        
+        <button hx-post="{% url 'fetch_questions_view' %}" 
+                hx-target="#question-results" 
+                hx-swap="innerHTML"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                class="inline-flex items-center px-6 py-3 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 transition-all active:scale-95 shadow-lg group">
+            <span class="mr-2 group-active:animate-spin">🚀</span> 
+            Sync AI Questions
+        </button>
+    </header>
+
+    <div class="mb-8 max-w-xl mx-auto">
+        <div class="relative">
+            <input type="text" 
+                   name="search" 
+                   hx-get="{% url 'question_list' %}" 
+                   hx-trigger="keyup changed delay:300ms" 
+                   hx-target="#question-results" 
+                   placeholder="Search..." 
+                   class="...">
         </div>
-    {% empty %}
-        <p>No questions yet. Go to the <a href="/admin">Admin panel</a> to add some!</p>
-    {% endfor %}
-</body>
-</html>
+    </div>
+
+    <div id="question-results" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% include 'questions/partials/question_items.html' %}
+    </div>
+</div>
+{% endblock %}
