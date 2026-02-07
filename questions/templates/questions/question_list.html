@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tech Interview Prep</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6; background: #f9f9f9; }
+        .question-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .badge { background: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; }
+        .answer { color: #555; background: #f1f1f1; padding: 10px; border-left: 4px solid #007bff; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>📋 Interview Questions</h1>
+    
+    {% for q in questions %}
+        <div class="question-card">
+            <span class="badge">{{ q.get_category_display }}</span>
+            <h2>{{ q.title }}</h2>
+            <p>{{ q.body }}</p>
+            
+            <details>
+                <summary>Show Answer</summary>
+                <div class="answer">{{ q.answer }}</div>
+            </details>
+        </div>
+    {% empty %}
+        <p>No questions yet. Go to the <a href="/admin">Admin panel</a> to add some!</p>
+    {% endfor %}
+</body>
+</html>
