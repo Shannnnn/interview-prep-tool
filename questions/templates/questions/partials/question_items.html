@@ -6,10 +6,23 @@
             {{ question.get_category_display }}
         </span>
     </div>
-    <p class="text-slate-600 mb-4 line-clamp-2">{{ question.body }}</p>
-    <button class="text-blue-600 font-medium hover:text-blue-800 transition-colors">
-        View Answer →
-    </button>
+    
+    <p class="text-slate-600 mb-6">{{ question.body }}</p>
+
+    <details class="group">
+        <summary class="list-none cursor-pointer">
+            <div class="text-blue-600 font-medium hover:text-blue-800 transition-colors flex items-center">
+                <span class="group-open:hidden">View Answer →</span>
+                <span class="hidden group-open:block text-slate-400">Hide Answer ↑</span>
+            </div>
+        </summary>
+        
+        <div class="mt-4 p-4 bg-slate-50 border-l-4 border-blue-500 rounded-r-lg animate-in fade-in slide-in-from-top-1 duration-300">
+            <p class="text-slate-700 leading-relaxed italic">
+                {{ question.answer }}
+            </p>
+        </div>
+    </details>
 </div>
 {% empty %}
 <div class="col-span-full text-center py-12">
