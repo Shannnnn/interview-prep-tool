@@ -7,12 +7,16 @@ from .models import Question
 # 1. The original list view for your homepage
 def question_list(request):
     search_text = request.GET.get('search', '')
+    category_filter = request.GET.get('category', '') # Get category from URL
+    
     questions = Question.objects.all()
 
     if search_text:
         questions = questions.filter(title__icontains=search_text)
+    
+    if category_filter:
+        questions = questions.filter(category=category_filter)
 
-    # Check if the request is coming from HTMX
     if request.headers.get('HX-Request'):
         return render(request, 'questions/partials/question_items.html', {'questions': questions})
 

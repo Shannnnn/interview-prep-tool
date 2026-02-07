@@ -10,6 +10,7 @@ class Question(models.Model):
     category = models.CharField(max_length=50, choices=STACK_CHOICES)
     body = models.TextField()
     answer = models.TextField()
+    difficulty = models.CharField(max_length=10, default='Mid')
 
     def __str__(self):
         return f"{self.title} ({self.get_category_display()})"

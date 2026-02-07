@@ -2,9 +2,14 @@
 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
     <div class="flex justify-between items-start mb-4">
         <h2 class="text-xl font-bold text-slate-800">{{ question.title }}</h2>
-        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-            {{ question.get_category_display }}
-        </span>
+        <div class="flex flex-col items-end gap-2">
+            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                {{ question.get_category_display }}
+            </span>
+            <span class="text-[10px] uppercase tracking-wider font-bold {% if question.difficulty == 'Senior' %}text-red-500{% elif question.difficulty == 'Mid' %}text-orange-500{% else %}text-green-500{% endif %}">
+                ● {{ question.difficulty }}
+            </span>
+        </div>
     </div>
     
     <p class="text-slate-600 mb-6">{{ question.body }}</p>

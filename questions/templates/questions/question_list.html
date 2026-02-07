@@ -16,6 +16,13 @@
         </button>
     </header>
 
+    <div class="flex flex-wrap justify-center gap-2 mb-8">
+    <button hx-get="{% url 'question_list' %}" hx-target="#question-results" class="px-4 py-2 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300 transition">All</button>
+    <button hx-get="{% url 'question_list' %}?category=DJ" hx-target="#question-results" class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition">Django</button>
+    <button hx-get="{% url 'question_list' %}?category=PY" hx-target="#question-results" class="px-4 py-2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition">Python</button>
+    <button hx-get="{% url 'question_list' %}?category=MA" hx-target="#question-results" class="px-4 py-2 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 transition">Math</button>
+    </div>
+
     <div class="mb-8 max-w-xl mx-auto">
         <div class="relative">
             <input type="text" 

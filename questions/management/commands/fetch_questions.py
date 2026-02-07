@@ -99,7 +99,8 @@ class Command(BaseCommand):
         
         prompt = """
         Generate 5 advanced tech interview questions in JSON format.
-        Format: {"questions": [{"title": "...", "category": "DJ", "body": "...", "answer": "..."}]}
+        Include a 'difficulty' field with one of these values: 'Junior', 'Mid', 'Senior'.
+        Format: {"questions": [{"title": "...", "category": "DJ", "body": "...", "answer": "...", "difficulty": "Senior"}]}
         Categories: DJ (Django), PY (Python), MA (Math/Numpy).
         Return ONLY the JSON.
         """
@@ -119,10 +120,11 @@ class Command(BaseCommand):
             
             for q in data.get('questions', []):
                 Question.objects.get_or_create(
-                    title=q['title'],
-                    category=q['category'],
-                    body=q['body'],
-                    answer=q['answer']
+                    title=q.get('title'),
+                    category=q.get('category'),
+                    body=q.get('body'),
+                    answer=q.get('answer'),      # <--- Check if this key matches the prompt
+                    difficulty=q.get('difficulty', 'Mid')
                 )
                 self.stdout.write(self.style.SUCCESS(f"✅ Added: {q['title']}"))
 
